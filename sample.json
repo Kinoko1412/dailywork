@@ -1,0 +1,12 @@
+{
+    "tasks": {
+      "Monday": {
+        "8:00": "Meeting with client",
+        "9:00": "Team stand-up"
+      },
+      "Tuesday": {
+        "10:00": "Doctor appointment"
+      }
+    }
+  }
+  
