@@ -118,17 +118,15 @@
 
         // 儲存任務到 Firebase
         function saveTask(day, time, task) {
-            const taskRef = ref(database, `tasks/${day}/${time}`);
-            set(taskRef, task)
-                .then(() => {
-                    console.log(`Task saved for ${day} at ${time}: ${task}`);
-                    checkmarkBtn.style.display = "none"; // 隱藏勾勾按鈕
-                    deleteBtn.style.display = "none";  // 隱藏叉叉按鈕
-                })
-                .catch((error) => {
-                    console.error("Error saving task:", error);
-                });
-        }
+    const taskRef = ref(database, `tasks/${day}/${time}`);
+    set(taskRef, task).then(() => {
+        console.log(`Task saved for ${day} at ${time}: ${task}`);
+        // 更新後重新載入資料
+        loadTasks();
+    }).catch((error) => {
+        console.error("Error saving task:", error);
+    });
+}
 
         // 刪除任務從 Firebase
         function deleteTask(day, time) {
