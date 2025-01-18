@@ -4,15 +4,15 @@ import { getDatabase, ref, set, onValue } from "firebase/database";
 
 // Firebase 配置
 const firebaseConfig = {
-  apiKey: "AIzaSyBY5U4zkq90mE_IardNvQ_1gczcrzmYAbc",
-  authDomain: "dailywork-45917.firebaseapp.com",
-  databaseURL: "https://dailywork-45917-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "dailywork-45917",
-  storageBucket: "dailywork-45917.firebasestorage.app",
-  messagingSenderId: "143194504484",
-  appId: "1:143194504484:web:262ce079f2e9ee8783c7b1",
-  measurementId: "G-E6ZDCH3YSQ",
-};
+    apiKey: "AIzaSyBY5U4zkq90mE_IardNvQ_1gczcrzmYAbc",
+    authDomain: "dailywork-45917.firebaseapp.com",
+    databaseURL: "https://dailywork-45917-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "dailywork-45917",
+    storageBucket: "dailywork-45917.firebasestorage.app",
+    messagingSenderId: "143194504484",
+    appId: "1:143194504484:web:262ce079f2e9ee8783c7b1",
+    measurementId: "G-E6ZDCH3YSQ"
+  };
 
 // 初始化 Firebase
 const app = initializeApp(firebaseConfig);
