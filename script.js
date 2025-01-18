@@ -59,6 +59,19 @@ document.querySelectorAll("td[contenteditable='true']").forEach((cell) => {
   });
 });
 
+document.querySelectorAll("td[contenteditable='true']").forEach(cell => {
+    cell.addEventListener("input", () => {
+        const checkmarkContainer = cell.querySelector(".checkmark-container");
+        // 如果格子有內容，顯示打勾按鈕，否則隱藏
+        if (cell.textContent.trim() !== "") {
+            checkmarkContainer.style.display = "block";
+        } else {
+            checkmarkContainer.style.display = "none";
+        }
+    });
+});
+
+
 // 從 Firebase 讀取數據並顯示到表格
 function loadTasks() {
   const tasksRef = ref(database, "tasks");
