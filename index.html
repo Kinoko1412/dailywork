@@ -16,20 +16,37 @@
             background-color: #f0f0f0;
         }
 
-        .checkmark-btn {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 16px;
+        .checkmark-btn,
+        .delete-btn {
+            position: fixed;
+            bottom: 20px;
+            font-size: 30px;
             cursor: pointer;
-            color: #28a745;
             background: none;
             border: none;
+            display: none; /* 初始隱藏 */
+        }
+
+        /* 勾勾按鈕樣式 */
+        .checkmark-btn {
+            right: 80px;
+            color: #28a745;
         }
 
         .checkmark-btn:hover {
-            font-size: 18px;
+            font-size: 35px;
             color: #218838;
+        }
+
+        /* 叉叉按鈕樣式 */
+        .delete-btn {
+            right: 20px;
+            color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            font-size: 35px;
+            color: #c82333;
         }
     </style>
 </head>
@@ -56,10 +73,13 @@
         </table>
     </div>
 
+    <button id="checkmark-btn" class="checkmark-btn">✔</button>
+    <button id="delete-btn" class="delete-btn">✖</button>
+
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+        import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -79,15 +99,22 @@
 
         // Generate calendar table
         const calendarBody = document.getElementById("calendar-body");
+        const taskCells = [];
 
         for (let hour = 8; hour <= 22; hour++) {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${hour}:00</td>
-                ${'<td class="task-cell" contenteditable="true"><button class="checkmark-btn">✔</button></td>'.repeat(7)}
+                ${'<td class="task-cell" contenteditable="true"></td>'.repeat(7)}
             `;
             calendarBody.appendChild(row);
+            // Save the task cells for later use
+            taskCells.push(...row.querySelectorAll(".task-cell"));
         }
+
+        const checkmarkBtn = document.getElementById("checkmark-btn");
+        const deleteBtn = document.getElementById("delete-btn");
+        let selectedCell = null;
 
         // 儲存任務到 Firebase
         function saveTask(day, time, task) {
@@ -95,27 +122,88 @@
             set(taskRef, task)
                 .then(() => {
                     console.log(`Task saved for ${day} at ${time}: ${task}`);
+                    checkmarkBtn.style.display = "none"; // 隱藏勾勾按鈕
+                    deleteBtn.style.display = "none";  // 隱藏叉叉按鈕
                 })
                 .catch((error) => {
                     console.error("Error saving task:", error);
                 });
         }
 
-        // 綁定打勾按鈕事件
-        document.querySelectorAll(".checkmark-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                const cell = button.closest("td"); // 找到按鈕所在的格子
-                const row = cell.parentNode;
-                const time = row.querySelector("td").textContent.trim(); // 獲取時間
-                const day = row.children[cell.cellIndex].previousElementSibling.textContent.trim(); // 獲取星期
-                const task = cell.textContent.trim(); // 獲取格子中的內容（去除多餘的空白）
+        // 刪除任務從 Firebase
+        function deleteTask(day, time) {
+            const taskRef = ref(database, `tasks/${day}/${time}`);
+            remove(taskRef)
+                .then(() => {
+                    console.log(`Task deleted for ${day} at ${time}`);
+                    selectedCell.textContent = ""; // 清空格子的內容
+                    checkmarkBtn.style.display = "none"; // 隱藏勾勾按鈕
+                    deleteBtn.style.display = "none";  // 隱藏叉叉按鈕
+                })
+                .catch((error) => {
+                    console.error("Error deleting task:", error);
+                });
+        }
 
-                // 儲存任務到 Firebase
-                if (task) {
-                    saveTask(day, time, task);
-                }
+        // 監聽格子的輸入，顯示勾勾按鈕和叉叉按鈕
+        taskCells.forEach(cell => {
+            cell.addEventListener("focus", () => {
+                selectedCell = cell;
+                checkmarkBtn.style.display = "block"; // 顯示勾勾按鈕
+                deleteBtn.style.display = "block";  // 顯示叉叉按鈕
+            });
+
+            cell.addEventListener("input", () => {
+                checkmarkBtn.style.display = "block"; // 顯示勾勾按鈕
+                deleteBtn.style.display = "block";  // 顯示叉叉按鈕
             });
         });
+
+        // 點擊勾勾按鈕時儲存資料並隱藏按鈕
+        checkmarkBtn.addEventListener("click", () => {
+            if (selectedCell && selectedCell.textContent.trim() !== "") {
+                const row = selectedCell.parentNode;
+                const time = row.querySelector("td").textContent.trim(); // 獲取時間
+                const day = row.children[selectedCell.cellIndex + 1].textContent.trim(); // 獲取星期
+                const task = selectedCell.textContent.trim(); // 獲取格子中的內容
+                saveTask(day, time, task);
+            }
+        });
+
+        // 點擊叉叉按鈕時刪除資料並隱藏按鈕
+        deleteBtn.addEventListener("click", () => {
+            if (selectedCell) {
+                const row = selectedCell.parentNode;
+                const time = row.querySelector("td").textContent.trim(); // 獲取時間
+                const day = row.children[selectedCell.cellIndex + 1].textContent.trim(); // 獲取星期
+                deleteTask(day, time);
+            }
+        });
+
+        // 從 Firebase 加載任務
+        function loadTasks() {
+            const tasksRef = ref(database, "tasks");
+            get(tasksRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const tasks = snapshot.val();
+                    // 遍歷 tasks 並將內容顯示到對應的格子中
+                    for (let day in tasks) {
+                        for (let time in tasks[day]) {
+                            const task = tasks[day][time];
+                            const cell = document.querySelector(`td[data-day="${day}"][data-time="${time}"]`);
+                            if (cell) {
+                                cell.textContent = task;
+                            }
+                        }
+                    }
+                }
+            }).catch((error) => {
+                console.error("Error loading tasks:", error);
+            });
+        }
+
+        // 加載任務
+        loadTasks();
     </script>
 </body>
 </html>
