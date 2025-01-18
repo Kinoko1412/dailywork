@@ -1,0 +1,76 @@
+/* 通用樣式 */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #fdfdfd;
+    margin: 0;
+    padding: 0;
+}
+
+/* 容器樣式 */
+.calendar-container {
+    width: 90%;
+    margin: 20px auto;
+}
+
+/* 按鈕樣式 */
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f5e6cc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #f1d8a3;
+}
+
+/* 表格樣式 */
+table.calendar {
+    width: 100%;
+    border-collapse: separate; /* 分離邊框模式 */
+    border-spacing: 10px; /* 設置行與列的間距 */
+    margin: 20px 0;
+    table-layout: fixed;
+}
+
+/* 表格頭部樣式 */
+table.calendar th,
+table.calendar td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+/* 圓形格子樣式 */
+.circle {
+    width: 501px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: #f9f2e8;
+    color: #6b5e52;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: auto;
+}
+
+/* 表格單元格間距 */
+table.calendar td {
+    padding: 0;
+    margin: 10px;
+}
+
+/* 時間和可編輯格子的樣式 */
+table.calendar td[contenteditable="true"] {
+    cursor: text;
+}
+
+table.calendar td[contenteditable="true"]:hover {
+    background-color: #f7ebe2;
+    outline: none;
+}
