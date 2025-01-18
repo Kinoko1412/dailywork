@@ -5,12 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Calendar</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 使格子保持一致 */
+        .task-cell {
+            position: relative;
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            padding: 5px;
+            background-color: #f0f0f0;
+        }
+
+        .checkmark-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #28a745;
+            background: none;
+            border: none;
+        }
+
+        .checkmark-btn:hover {
+            font-size: 18px;
+            color: #218838;
+        }
+    </style>
 </head>
-<td contenteditable="true" class="task-cell">
-    <div class="checkmark-container">
-        <button class="checkmark-btn">✔</button>
-    </div>
-</td>
 <body>
     <div class="calendar-container">
         <button id="prev-week">Previous Week</button>
@@ -33,22 +55,23 @@
             </tbody>
         </table>
     </div>
+
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // Firebase configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyBY5U4zkq90mE_IardNvQ_1gczcrzmYAbc",
-  authDomain: "dailywork-45917.firebaseapp.com",
-  databaseURL: "https://dailywork-45917-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "dailywork-45917",
-  storageBucket: "dailywork-45917.firebasestorage.app",
-  messagingSenderId: "143194504484",
-  appId: "1:143194504484:web:262ce079f2e9ee8783c7b1",
-  measurementId: "G-E6ZDCH3YSQ"
-};
+            apiKey: "AIzaSyBY5U4zkq90mE_IardNvQ_1gczcrzmYAbc",
+            authDomain: "dailywork-45917.firebaseapp.com",
+            databaseURL: "https://dailywork-45917-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dailywork-45917",
+            storageBucket: "dailywork-45917.firebasestorage.app",
+            messagingSenderId: "143194504484",
+            appId: "1:143194504484:web:262ce079f2e9ee8783c7b1",
+            measurementId: "G-E6ZDCH3YSQ"
+        };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
@@ -56,16 +79,43 @@
 
         // Generate calendar table
         const calendarBody = document.getElementById("calendar-body");
+
         for (let hour = 8; hour <= 22; hour++) {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${hour}:00</td>
-                ${'<td contenteditable="true"></td>'.repeat(7)}
+                ${'<td class="task-cell" contenteditable="true"><button class="checkmark-btn">✔</button></td>'.repeat(7)}
             `;
             calendarBody.appendChild(row);
         }
+
+        // 儲存任務到 Firebase
+        function saveTask(day, time, task) {
+            const taskRef = ref(database, `tasks/${day}/${time}`);
+            set(taskRef, task)
+                .then(() => {
+                    console.log(`Task saved for ${day} at ${time}: ${task}`);
+                })
+                .catch((error) => {
+                    console.error("Error saving task:", error);
+                });
+        }
+
+        // 綁定打勾按鈕事件
+        document.querySelectorAll(".checkmark-btn").forEach(button => {
+            button.addEventListener("click", () => {
+                const cell = button.closest("td"); // 找到按鈕所在的格子
+                const row = cell.parentNode;
+                const time = row.querySelector("td").textContent.trim(); // 獲取時間
+                const day = row.children[cell.cellIndex].previousElementSibling.textContent.trim(); // 獲取星期
+                const task = cell.textContent.trim(); // 獲取格子中的內容（去除多餘的空白）
+
+                // 儲存任務到 Firebase
+                if (task) {
+                    saveTask(day, time, task);
+                }
+            });
+        });
     </script>
-
-
 </body>
 </html>
