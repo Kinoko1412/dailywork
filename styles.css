@@ -1,99 +1,88 @@
-/* 通用樣式 */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #fdfdfd;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    background-color: #fdfdfd;
 }
 
-/* 容器樣式 */
 .calendar-container {
-    width: 90%;
-    margin: 20px auto;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* 按鈕樣式 */
-button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.week-btn {
+    padding: 8px 16px;
     background-color: #f5e6cc;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px;
 }
 
-button:hover {
+.week-btn:hover {
     background-color: #f1d8a3;
 }
 
-/* 表格樣式 */
-table.calendar {
-    width: 100%;
-    border-collapse: separate; /* 分離邊框模式 */
-    border-spacing: 10px; /* 設置行與列的間距 */
-    margin: 20px 0;
-    table-layout: fixed;
+#week-display {
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* 表格頭部樣式 */
-table.calendar th,
-table.calendar td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 10px;
+.calendar {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px;
 }
+
+.calendar th {
+    padding: 10px;
+    background-color: #f5e6cc;
+    border-radius: 4px;
+}
+
 .task-cell {
-    position: relative;
-    width: 100px;
-    height: 40px;
-    text-align: center;
-    padding: 5px;
+    padding: 10px;
     background-color: #f0f0f0;
+    border-radius: 4px;
+    min-height: 40px;
+    transition: background-color 0.3s;
+}
+
+.task-cell:hover {
+    background-color: #e8e8e8;
+}
+
+.task-cell:focus {
+    outline: 2px solid #f1d8a3;
+    background-color: #ffffff;
+}
+
+.action-btn {
+    position: fixed;
+    bottom: 20px;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
 }
 
 .checkmark-btn {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    color: #28a745;
+    right: 80px;
+    background-color: #28a745;
+    color: white;
 }
 
-.checkmark-btn:hover {
-    font-size: 18px;
-    color: #218838;
-}
-
-
-/* 圓形格子樣式 */
-.circle {
-    width: 501px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 50%;
-    background-color: #f9f2e8;
-    color: #6b5e52;
-    display: inline-block;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: auto;
-}
-
-/* 表格單元格間距 */
-table.calendar td {
-    padding: 0;
-    margin: 10px;
-}
-
-/* 時間和可編輯格子的樣式 */
-table.calendar td[contenteditable="true"] {
-    cursor: text;
-}
-
-table.calendar td[contenteditable="true"]:hover {
-    background-color: #f7ebe2;
-    outline: none;
+.delete-btn {
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
 }

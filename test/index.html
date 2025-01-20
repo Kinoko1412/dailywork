@@ -10,7 +10,11 @@
     <div class="calendar-container">
         <div class="calendar-header">
             <button id="prev-week" class="week-btn">Previous Week</button>
-            <span id="week-display"></span>
+            <div class="week-info">
+                <span>Week </span>
+                <span id="week-display"></span>
+                <input type="date" id="week-date" class="week-date-input">
+            </div>
             <button id="next-week" class="week-btn">Next Week</button>
         </div>
         <table class="calendar">
@@ -30,6 +34,16 @@
                 <!-- 由 JavaScript 動態生成 -->
             </tbody>
         </table>
+    </div>
+    <div id="color-picker" class="color-picker">
+        <div class="color-option" data-color="#ff0000" style="background-color: #ff0000;"></div>
+        <div class="color-option" data-color="#ffa500" style="background-color: #ffa500;"></div>
+        <div class="color-option" data-color="#ffff00" style="background-color: #ffff00;"></div>
+        <div class="color-option" data-color="#00ff00" style="background-color: #00ff00;"></div>
+        <div class="color-option" data-color="#0000ff" style="background-color: #0000ff;"></div>
+        <div class="color-option" data-color="#800080" style="background-color: #800080;"></div>
+        <div class="color-option" data-color="#ffffff" style="background-color: #ffffff;"></div>
+        <input type="color" id="custom-color" class="custom-color-picker">
     </div>
     <button id="save-btn" class="action-btn checkmark-btn">✔</button>
     <button id="delete-btn" class="action-btn delete-btn">✖</button>
