@@ -256,6 +256,7 @@ function setupEventListeners() {
     });
 }
 
+
 // 獲取當前週數
 function getCurrentWeek() {
     const now = new Date();
@@ -295,65 +296,6 @@ async function deleteTask(day, time) {
         console.error("Error deleting task:", error);
     }
 }
-
-// 事件監聽器設置
-function setupEventListeners() {
-    const saveBtn = document.getElementById('save-btn');
-    const deleteBtn = document.getElementById('delete-btn');
-    const prevWeekBtn = document.getElementById('prev-week');
-    const nextWeekBtn = document.getElementById('next-week');
-
-    document.querySelectorAll('.task-cell').forEach(cell => {
-        cell.addEventListener('focus', () => {
-            selectedCell = cell;
-            saveBtn.style.display = 'block';
-            deleteBtn.style.display = 'block';
-        });
-    });
-
-    saveBtn.addEventListener('click', async () => {
-        if (selectedCell) {
-            const content = selectedCell.textContent;
-            const { day, time } = selectedCell.dataset;
-            await saveTask(day, time, content);
-            saveBtn.style.display = 'none';
-            deleteBtn.style.display = 'none';
-        }
-    });
-
-    deleteBtn.addEventListener('click', async () => {
-        if (selectedCell) {
-            const { day, time } = selectedCell.dataset;
-            await deleteTask(day, time);
-            selectedCell.textContent = '';
-            saveBtn.style.display = 'none';
-            deleteBtn.style.display = 'none';
-        }
-    });
-
-    prevWeekBtn.addEventListener('click', () => {
-        currentWeek--;
-        updateWeekDisplay();
-        loadTasks();
-    });
-
-    nextWeekBtn.addEventListener('click', () => {
-        currentWeek++;
-        updateWeekDisplay();
-        loadTasks();
-    });
-
-    // 點擊空白處時隱藏按鈕
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.task-cell') && 
-            !e.target.closest('.action-btn')) {
-            saveBtn.style.display = 'none';
-            deleteBtn.style.display = 'none';
-            selectedCell = null;
-        }
-    });
-}
-
 
 // 初始化應用
 document.addEventListener('DOMContentLoaded', () => {
