@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #fdfdfd;
+}
+
+.calendar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.week-btn {
+    padding: 8px 16px;
+    background-color: #f5e6cc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.week-btn:hover {
+    background-color: #f1d8a3;
+}
+
+#week-display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+
+.calendar th {
+    padding: 10px;
+    background-color: #f5e6cc;
+    border-radius: 4px;
+}
+
+.task-cell {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    min-height: 40px;
+    transition: background-color 0.3s;
+}
+
+.task-cell:hover {
+    background-color: #e8e8e8;
+}
+
+.task-cell:focus {
+    outline: 2px solid #f1d8a3;
+    background-color: #ffffff;
+}
+
+.action-btn {
+    position: fixed;
+    bottom: 20px;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+}
+
+.checkmark-btn {
+    right: 80px;
+    background-color: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+}

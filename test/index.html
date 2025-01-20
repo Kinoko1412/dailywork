@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prev-week" class="week-btn">Previous Week</button>
+            <span id="week-display"></span>
+            <button id="next-week" class="week-btn">Next Week</button>
+        </div>
+        <table class="calendar">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+                <!-- 由 JavaScript 動態生成 -->
+            </tbody>
+        </table>
+    </div>
+    <button id="save-btn" class="action-btn checkmark-btn">✔</button>
+    <button id="delete-btn" class="action-btn delete-btn">✖</button>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>
