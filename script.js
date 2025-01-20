@@ -28,14 +28,28 @@ for (let hour = 8; hour <= 22; hour++) {
 }
 
 // 儲存任務到 Firebase
+// 儲存任務到 Firebase，根據時間動態建立結構
+// 儲存任務到 Firebase，根據時間動態建立結構
 function saveTask(day, time, task) {
+    if (!day || !time || !task) {
+        console.error('Missing data for saving task');
+        return;
+    }
+    
     const taskRef = ref(database, `tasks/${day}/${time}`);
-    set(taskRef, task).then(() => {
-        console.log(`Task saved for ${day} at ${time}: ${task}`);
-    }).catch((error) => {
-        console.error("Error saving task:", error);
-    });
+    
+    // 儲存任務到對應的時間位置
+    set(taskRef, task)
+        .then(() => {
+            console.log(`Task saved for ${day} at ${time}: ${task}`);
+            // 儲存成功後重新載入資料
+            loadTasks();
+        })
+        .catch((error) => {
+            console.error("Error saving task:", error);
+        });
 }
+
 
 // 綁定打勾按鈕事件
 document.querySelectorAll(".checkmark-btn").forEach(button => {
@@ -54,27 +68,35 @@ document.querySelectorAll(".checkmark-btn").forEach(button => {
 });
 
 // 從 Firebase 讀取數據並顯示到表格
+// 讀取 Firebase 中的資料並顯示在網頁上
 function loadTasks() {
     const tasksRef = ref(database, "tasks");
     onValue(tasksRef, (snapshot) => {
         const tasks = snapshot.val();
         if (tasks) {
+            // 遍歷所有星期
             for (const day in tasks) {
-                for (const time in tasks[day]) {
-                    const task = tasks[day][time];
-                    document.querySelectorAll("tr").forEach(row => {
-                        if (row.children[0].textContent === time) {
-                            const index = Array.from(document.querySelectorAll("th")).findIndex(th => th.textContent === day);
-                            if (index > 0) {
-                                row.children[index].textContent = task;
-                            }
+                if (tasks.hasOwnProperty(day)) {
+                    // 遍歷每個星期的時間段
+                    for (const time in tasks[day]) {
+                        if (tasks[day].hasOwnProperty(time)) {
+                            const task = tasks[day][time];
+                            // 找到對應的格子並顯示任務
+                            document.querySelectorAll("tr").forEach(row => {
+                                const timeCell = row.children[0]; // 時間欄
+                                const dayCell = row.children[1 + ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].indexOf(day)]; // 對應星期的格子
+                                if (timeCell && timeCell.textContent === time && dayCell) {
+                                    dayCell.textContent = task; // 填入任務
+                                }
+                            });
                         }
-                    });
+                    }
                 }
             }
         }
     });
 }
+
 
 // 初始加載數據
 loadTasks();

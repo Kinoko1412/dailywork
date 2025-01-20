@@ -117,7 +117,8 @@
         let selectedCell = null;
 
         // 儲存任務到 Firebase
-        function saveTask(day, time, task) {
+        // 儲存任務到 Firebase，依照星期和時間儲存
+function saveTask(day, time, task) {
     const taskRef = ref(database, `tasks/${day}/${time}`);
     set(taskRef, task).then(() => {
         console.log(`Task saved for ${day} at ${time}: ${task}`);
@@ -127,6 +128,7 @@
         console.error("Error saving task:", error);
     });
 }
+
 
         // 刪除任務從 Firebase
         function deleteTask(day, time) {

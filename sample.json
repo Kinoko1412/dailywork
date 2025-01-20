@@ -1,11 +1,20 @@
 {
     "tasks": {
       "Monday": {
-        "8:00": "Meeting with client",
-        "9:00": "Team stand-up"
+        "8:00": "Meeting with team",
+        "9:00": "Work on project"
       },
       "Tuesday": {
-        "10:00": "Doctor appointment"
+        "8:00": "Doctor appointment"
+      },
+      "Wednesday": {
+        "8:00": "Yoga class"
+      },
+      "Thursday": {
+        "10:00": "Work on task"
+      },
+      "Friday": {
+        "14:00": "Conference call"
       }
     }
   }
